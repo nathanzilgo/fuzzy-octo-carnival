@@ -33,6 +33,8 @@ struct PomodoroSession {
     elapsed_secs: u64,
 }
 
+const PORT: u32 = 3000;
+
 impl PomodoroSession {
     fn new(id: u64, work_minutes: u64, break_minutes: u64) -> Self {
         Self {
@@ -126,8 +128,8 @@ async fn main() -> anyhow::Result<()> {
             get(get_session),
         )
         .with_state(state);
-
-    let listener = TcpListener::bind("0.0.0.0:3000").await?;
+    
+    let listener = TcpListener::bind(format!("0.0.0.0:{}", PORT)).await?;
     axum::serve(listener, app).await?;
     Ok(())
 }
